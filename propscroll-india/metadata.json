@@ -1,0 +1,7 @@
+{
+  "name": "PropScroll India",
+  "description": "A high-performance real estate aggregator for the Indian market featuring infinite scrolling and AI-powered property search.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
