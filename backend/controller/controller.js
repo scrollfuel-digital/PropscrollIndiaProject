@@ -57,8 +57,6 @@ let CreateAllEnquiries = async (req, res) => {
         })
 
         console.log(req.body);
-        console.log("enquiry created");
-
     } catch (err) {
         res.status(500).json({
             success: false,
@@ -67,4 +65,74 @@ let CreateAllEnquiries = async (req, res) => {
         })
     }
 }
-export { CreateForm, CreateAllEnquiries }
+let GetAllContacts = async (req, res) => {
+    try {
+        const contacts = await ConatctModel.find().sort({ createdAt: -1 }).lean();
+        res.status(200).json({ success: true, data: contacts });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Failed to fetch contacts", error: err.message });
+    }
+};
+
+let GetAllEnquiries = async (req, res) => {
+    try {
+        const enquiries = await EnquiryModel.find().sort({ _id: -1 }).lean();
+        res.status(200).json({ success: true, data: enquiries });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Failed to fetch enquiries", error: err.message });
+    }
+};
+
+let GetNotifications = async (req, res) => {
+    try {
+        const [contacts, enquiries] = await Promise.all([
+            ConatctModel.find().sort({ createdAt: -1 }).limit(10).lean(),
+            EnquiryModel.find().sort({ _id: -1 }).limit(10).lean(),
+        ]);
+
+        const notifications = [
+            ...contacts.map(c => ({
+                _id: c._id,
+                type: "contact",
+                title: `New contact from ${c.name}`,
+                subtitle: `${c.service} · ${c.location}`,
+                time: c.createdAt,
+            })),
+            ...enquiries.map(e => ({
+                _id: e._id,
+                type: "enquiry",
+                title: `Enquiry from ${e.name}`,
+                subtitle: e.details?.slice(0, 60),
+                time: null,
+            })),
+        ];
+
+        res.status(200).json({ success: true, data: notifications });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Failed to fetch notifications", error: err.message });
+    }
+};
+
+let GetDashboardStats = async (req, res) => {
+    try {
+        const [totalContacts, totalEnquiries, recentContacts, recentEnquiries] = await Promise.all([
+            ConatctModel.countDocuments(),
+            EnquiryModel.countDocuments(),
+            ConatctModel.find().sort({ createdAt: -1 }).limit(5).lean(),
+            EnquiryModel.find().sort({ _id: -1 }).limit(5).lean(),
+        ]);
+        res.status(200).json({
+            success: true,
+            data: {
+                totalContacts,
+                totalEnquiries,
+                recentContacts,
+                recentEnquiries,
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Failed to fetch stats", error: err.message });
+    }
+};
+
+export { CreateForm, CreateAllEnquiries, GetDashboardStats, GetNotifications, GetAllContacts, GetAllEnquiries };
