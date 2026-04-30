@@ -5,7 +5,7 @@ import cors from "cors";
 import authrouter from "./routers/auth.js";
 import formrouter from "./routers/route.js";
 
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "/.env" });
 
 let app = express();
 let port = process.env.PORT || 5000;
