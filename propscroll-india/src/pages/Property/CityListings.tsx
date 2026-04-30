@@ -83,10 +83,14 @@ function generateListings(city: string, area: string, category: string) {
 }
 
 // ── Listing Card ──────────────────────────────────────────────────────────────
-const ListingCard: React.FC<{ listing: any; onClick: (l: any) => void; index: number }> = ({
-  listing, onClick, index,
-}) => {
-  const [saved, setSaved] = React.useState(false);
+const ListingCard: React.FC<{
+  listing: any;
+  onClick: (l: any) => void;
+  index: number;
+  wishlist: string[];
+  onWishlistToggle: (id: string, property?: any) => void;
+}> = ({ listing, onClick, index, wishlist, onWishlistToggle }) => {
+  const isSaved = wishlist.includes(listing.id);
   return (
     <div
       onClick={() => onClick(listing)}
@@ -102,10 +106,10 @@ const ListingCard: React.FC<{ listing: any; onClick: (l: any) => void; index: nu
           </span>
         )}
         <button
-          onClick={(e) => { e.stopPropagation(); setSaved((v) => !v); }}
-          className={`absolute top-2.5 right-2.5 w-9 h-9 rounded-[9px] flex items-center justify-center border-none cursor-pointer transition-all ${saved ? "bg-red-500" : "bg-white/90"}`}
+          onClick={(e) => { e.stopPropagation(); onWishlistToggle(listing.id, listing); }}
+          className={`absolute top-2.5 right-2.5 w-9 h-9 rounded-[9px] flex items-center justify-center border-none cursor-pointer transition-all ${isSaved ? "bg-red-500" : "bg-white/90"}`}
         >
-          <Heart size={15} fill={saved ? "#fff" : "none"} color={saved ? "#fff" : "#475569"} />
+          <Heart size={15} fill={isSaved ? "#fff" : "none"} color={isSaved ? "#fff" : "#475569"} />
         </button>
         <div className="absolute bottom-2.5 left-3 text-white text-[11px] flex items-center gap-1"><Eye size={11} /> {listing.views}</div>
         <div className="absolute bottom-2.5 right-3 text-white text-[11px] flex items-center gap-1"><Clock size={11} /> {listing.posted}</div>
@@ -137,7 +141,10 @@ const ListingCard: React.FC<{ listing: any; onClick: (l: any) => void; index: nu
 };
 
 // ── City Listings Page ────────────────────────────────────────────────────────
-const CityListings: React.FC = () => {
+const CityListings: React.FC<{ wishlist?: string[]; onWishlistToggle?: (id: string, property?: any) => void }> = ({
+  wishlist = [],
+  onWishlistToggle = () => {},
+}) => {
   const { city: citySlug, area: areaSlug, category: catSlug } = useParams<{
     city: string; area: string; category?: string;
   }>();
@@ -168,6 +175,8 @@ const CityListings: React.FC = () => {
         property={selected}
         onBack={() => setSelected(null)}
         onContact={() => navigate("/contact")}
+        wishlist={wishlist}
+        onWishlistToggle={onWishlistToggle}
       />
     );
   }
@@ -222,7 +231,7 @@ const CityListings: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-10">
         <div className={`grid gap-6 ${gridView ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
           {filtered.map((listing, i) => (
-            <ListingCard key={listing.id} listing={listing} onClick={setSelected} index={i} />
+            <ListingCard key={listing.id} listing={listing} onClick={setSelected} index={i} wishlist={wishlist} onWishlistToggle={onWishlistToggle} />
           ))}
         </div>
       </div>

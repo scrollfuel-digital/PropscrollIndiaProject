@@ -1,37 +1,31 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
+import { useAtomValue } from "jotai";
+import { isAuthenticatedAtom, authLoadingAtom, authErrorAtom } from "@/src/state/authState";
+import { useAuthActions } from "@/src/hooks/useAuthActions";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (email: string, password: string) => boolean;
+  isLoading: boolean;
+  error: string;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (username: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const ADMIN_EMAIL = "admin@propscroll.com";
-const ADMIN_PASSWORD = "admin123";
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    () => localStorage.getItem("admin_auth") === "true"
-  );
+  const isAuthenticated = useAtomValue(isAuthenticatedAtom);
+  const isLoading = useAtomValue(authLoadingAtom);
+  const error = useAtomValue(authErrorAtom);
+  const { login: loginAction, register: registerAction, logout: logoutAction } = useAuthActions();
 
-  const login = (email: string, password: string) => {
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      localStorage.setItem("admin_auth", "true");
-      setIsAuthenticated(true);
-      return true;
-    }
-    return false;
-  };
-
-  const logout = () => {
-    localStorage.removeItem("admin_auth");
-    setIsAuthenticated(false);
-  };
+  const login = (email: string, password: string) => loginAction({ email, password });
+  const register = (username: string, email: string, password: string) =>
+    registerAction({ username, email, password });
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, error, login, register, logout: logoutAction }}>
       {children}
     </AuthContext.Provider>
   );

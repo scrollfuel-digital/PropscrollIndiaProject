@@ -1,7 +1,13 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function AdminRoutes() {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Outlet /> : <Navigate to="/admin/login" replace />;
+  const { isAuthenticated, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) return null;
+
+  return isAuthenticated
+    ? <Outlet />
+    : <Navigate to="/admin/login" state={{ from: location }} replace />;
 }

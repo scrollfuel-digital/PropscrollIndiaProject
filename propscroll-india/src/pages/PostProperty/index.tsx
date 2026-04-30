@@ -63,7 +63,7 @@ const PostProperty: React.FC = () => {
             </div>
             {[
               { name: "name", label: "Full Name", placeholder: "Rajesh Patil", type: "text" },
-              { name: "phone", label: "Phone Number", placeholder: "+91 98765 43210", type: "tel" },
+              { name: "phone", label: "Phone Number", placeholder: "+91 80870 92777", type: "tel" },
               { name: "email", label: "Email Address", placeholder: "rajesh@example.com", type: "email" },
             ].map((f) => (
               <div key={f.name} className="flex flex-col gap-1">

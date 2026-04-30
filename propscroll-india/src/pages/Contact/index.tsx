@@ -145,7 +145,7 @@ Sent via PropScroll Contact Page.`;
     e.preventDefault();
 
     try {
-      await api.post("/create", {
+      await api.post("/form/create", {
         name: form.name,
         email: form.email,
         phone: form.phone,
@@ -156,6 +156,17 @@ Sent via PropScroll Contact Page.`;
       });
 
       handleWhatsApp();
+      
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        city: "",
+        budget: "",
+        message: "",
+      });
+
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 4000);
     } catch (err: any) {
@@ -170,7 +181,7 @@ Sent via PropScroll Contact Page.`;
       address: "West High Court Road, Dharampeth",
       pin: "Nagpur – 440 010, Maharashtra",
       hours: "Mon–Sat: 9AM – 7PM",
-      phone: "+91 782 283 0497",
+      phone: "+91 80870 92777",
       tag: "Main Office",
       tagColor: "#008C99",
     },
@@ -179,7 +190,7 @@ Sent via PropScroll Contact Page.`;
       address: "Bandra Kurla Complex, BKC",
       pin: "Mumbai – 400 051, Maharashtra",
       hours: "Mon–Fri: 10AM – 6PM",
-      phone: "+91 982 000 1234",
+      phone: "+91 80870 92777",
       tag: "Satellite",
       tagColor: "#8B5CF6",
     },
@@ -188,7 +199,7 @@ Sent via PropScroll Contact Page.`;
       address: "Koregaon Park, Lane 7",
       pin: "Pune – 411 001, Maharashtra",
       hours: "Mon–Fri: 10AM – 6PM",
-      phone: "+91 982 000 5678",
+      phone: "+91 80870 92777",
       tag: "Satellite",
       tagColor: "#F59E0B",
     },
@@ -336,7 +347,7 @@ Sent via PropScroll Contact Page.`;
               <InfoCard
                 icon={<Phone size={22} />}
                 title="Call Us Directly"
-                lines={["+91 782 283 0497", "Mon – Sat · 9 AM to 7 PM IST"]}
+                lines={["+91 80870 92777", "Mon – Sat · 9 AM to 7 PM IST"]}
                 accent="#008C99"
                 delay={0}
               />
@@ -350,7 +361,7 @@ Sent via PropScroll Contact Page.`;
               <InfoCard
                 icon={<MessageSquare size={22} />}
                 title="WhatsApp"
-                lines={["+91 782 283 0497", "Tap submit below to open chat"]}
+                lines={["+91 80870 92777", "Tap submit below to open chat"]}
                 accent="#22C55E"
                 delay={160}
               />

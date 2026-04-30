@@ -1,28 +1,36 @@
-import { Outlet, useLocation } from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 
-const pageTitles: Record<string, string> = {
-  "/admin/dashboard": "Dashboard",
-  "/admin/properties": "Properties",
-  "/admin/add-property": "Add Property",
-  "/admin/leads": "Leads",
-  "/admin/agents": "Agents",
-  "/admin/categories": "Categories",
-  "/admin/analytics": "Analytics",
-  "/admin/settings": "Settings",
-};
-
 export default function AdminLayout() {
-  const { pathname } = useLocation();
-  const title = pageTitles[pathname] ?? "Admin";
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);   // mobile drawer
+  const [collapsed, setCollapsed] = React.useState(false);        // tablet icon-only
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header title={title} />
-        <main className="flex-1 overflow-y-auto p-6">
+    <div className="flex h-screen overflow-hidden bg-gray-100">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        collapsed={collapsed}
+        onClose={() => setSidebarOpen(false)}
+        onToggleCollapse={() => setCollapsed((v) => !v)}
+      />
+
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <Header
+          onMenuClick={() => setSidebarOpen(true)}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed((v) => !v)}
+        />
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <Outlet />
         </main>
       </div>

@@ -11,12 +11,8 @@ import {
   Mail,
   MessageCircle,
 } from "lucide-react";
-
-enum PropertyType {
-  BUY = "Buy",
-  RENT = "Rent",
-  COMMERCIAL = "Commercial",
-}
+import { PropertyType } from "@/src/types";
+import { api } from "@/src/api/axios";
 
 interface HeroProps {
   onSearch?: (query: string, type: PropertyType) => void;
@@ -160,22 +156,14 @@ const ContactModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     setStatus("loading");
     setErrMsg("");
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000"}/enquiries`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? "Submission failed");
+      const { data } = await api.post("/form/enquiries", form);
+      if (!data.success) throw new Error(data.message ?? "Submission failed");
       setStatus("success");
       setForm({ name: "", phone: "", details: "" });
       setTimeout(() => setStatus("idle"), 3000);
     } catch (err: any) {
       setStatus("error");
-      setErrMsg(err.message ?? "Something went wrong");
+      setErrMsg(err.response?.data?.message ?? err.message ?? "Something went wrong");
     }
   };
 
@@ -225,7 +213,7 @@ const ContactModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           {
             icon: <MessageCircle size={18} />,
             label: "WhatsApp",
-            value: "+91 98765 43210",
+            value: "+91 80870 92777",
             sub: "Quick responses on WhatsApp",
             color: "#25D366",
           },
@@ -503,18 +491,18 @@ const Hero: React.FC<HeroProps> = ({ onSearch, onAiRequest }) => {
           <div className="inline-flex bg-black/55 backdrop-blur-xl rounded-t-[10px] overflow-hidden border border-white/10 border-b-0">
             {(
               [
-                { type: PropertyType.BUY, icon: <Home size={13} /> },
-                { type: PropertyType.RENT, icon: <MapPin size={13} /> },
-                { type: PropertyType.COMMERCIAL, icon: <Landmark size={13} /> },
+                { type: PropertyType.BUY, label: "Buy", icon: <Home size={13} /> },
+                { type: PropertyType.RENT, label: "Rent", icon: <MapPin size={13} /> },
+                { type: PropertyType.COMMERCIAL, label: "Commercial", icon: <Landmark size={13} /> },
               ] as const
-            ).map(({ type, icon }) => (
+            ).map(({ type, label, icon }) => (
               <button
                 key={type}
                 onClick={() => setActiveTab(type)}
                 className={`relative px-[14px] sm:px-[22px] py-[9px] sm:py-[10px] bg-transparent border-none cursor-pointer text-[11px] sm:text-[12px] font-semibold tracking-[.04em] transition-all flex items-center gap-[5px] after:absolute after:bottom-0 after:h-[2px] after:bg-[#008C99] after:rounded-t after:transition-all after:duration-300 ${activeTab === type ? "text-white after:left-3 after:right-3" : "text-white/60 hover:text-white/90 after:left-1/2 after:right-1/2"}`}
               >
                 {icon}
-                {type}
+                {label}
               </button>
             ))}
           </div>

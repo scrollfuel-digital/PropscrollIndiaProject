@@ -5,18 +5,22 @@ import PropertyCard from "@/src/components/property/PropertyCard";
 interface PropScrollFeedProps {
   properties: Property[];
   wishlist: string[];
-  onWishlistToggle: (id: string) => void;
+  onWishlistToggle: (id: string, property?: any) => void;
+  isLoading?: boolean;
+  onLoadMore?: () => void;
+  hasMore?: boolean;
 }
 
 const PropScrollFeed: React.FC<PropScrollFeedProps> = ({
   properties,
   wishlist,
   onWishlistToggle,
+  isLoading = false,
 }) => {
   // Memoize wishlist toggle so cards don’t re-render unnecessarily
   const handleWishlistToggle = useCallback(
-    (id: string) => {
-      onWishlistToggle(id);
+    (id: string, property?: any) => {
+      onWishlistToggle(id, property);
     },
     [onWishlistToggle],
   );
@@ -44,16 +48,25 @@ const PropScrollFeed: React.FC<PropScrollFeedProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {properties.map((property) => (
           <PropertyCard
-            key={property.id} // ✅ fixed key
+            key={property.id}
             property={property}
             isWishlisted={wishlist.includes(property.id)}
-            onWishlistToggle={handleWishlistToggle}
+            onWishlistToggle={(id) => handleWishlistToggle(id, property)}
           />
         ))}
       </div>
 
+      {/* Loading skeletons */}
+      {isLoading && properties.length === 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-64 bg-gray-200 rounded-2xl animate-pulse" />
+          ))}
+        </div>
+      )}
+
       {/* Empty State */}
-      {properties.length === 0 && (
+      {!isLoading && properties.length === 0 && (
         <div className="text-center py-24 bg-white rounded-2xl border border-gray-100 shadow-md">
           <h3 className="text-2xl font-black text-[#0F2540] mb-2">
             No properties found.

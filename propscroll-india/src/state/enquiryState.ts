@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
 interface EnquiryState {
   loading: boolean;
@@ -7,10 +7,7 @@ interface EnquiryState {
 }
 
 export const enquiryState = atom<EnquiryState>({
-  key: "enquiryState",
-  default: {
-    loading: false,
-    success: null,
-    error: null,
-  },
+  loading: false,
+  success: null,
+  error: null,
 });
