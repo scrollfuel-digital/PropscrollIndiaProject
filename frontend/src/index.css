@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+@import "tailwindcss";
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background-color: #F3F4F6;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #0F2540; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #008C99; }
+
+@keyframes shimmer {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.animate-shimmer { animation: shimmer 4s linear infinite; }
+
+@keyframes navCardIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+@keyframes navSlideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
+@keyframes navFadeIn  { from{opacity:0} to{opacity:1} }
+@keyframes cuSlideUp   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
+@keyframes cuFadeIn    { from{opacity:0} to{opacity:1} }
+@keyframes cuSlideLeft { from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:none} }
+@keyframes cuCheck     { from{transform:scale(0) rotate(-15deg)} to{transform:scale(1) rotate(0)} }
+@keyframes cuDot       { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+/* Hero */
+@keyframes swInR  { from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0 0 0)} }
+@keyframes swInL  { from{clip-path:inset(0 0 0 100%)} to{clip-path:inset(0 0 0 0)} }
+@keyframes swOutR { from{clip-path:inset(0 0 0 0)} to{clip-path:inset(0 0 0 100%)} }
+@keyframes swOutL { from{clip-path:inset(0 0 0 0)} to{clip-path:inset(0 100% 0 0)} }
+@keyframes bgZ    { from{transform:scale(1.06)} to{transform:scale(1.13)} }
+@keyframes txtIn  { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+@keyframes aiGlow { 0%,100%{box-shadow:0 0 0 0 rgba(0,140,153,.4)} 50%{box-shadow:0 0 0 8px rgba(0,140,153,0)} }
+@keyframes fadeInBg    { from{opacity:0} to{opacity:1} }
+@keyframes slideUpModal{ from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+.swIR { animation: swInR  1s cubic-bezier(.77,0,.175,1) forwards }
+.swIL { animation: swInL  1s cubic-bezier(.77,0,.175,1) forwards }
+.swOR { animation: swOutR 1s cubic-bezier(.77,0,.175,1) forwards }
+.swOL { animation: swOutL 1s cubic-bezier(.77,0,.175,1) forwards }
+.bgzoom { animation: bgZ 10s ease-in-out infinite alternate }
+.txt-in { animation: txtIn .7s cubic-bezier(.16,1,.3,1) forwards }
+.ai-dot { animation: aiGlow 2.5s infinite; border-radius: 50%; }
+
+/* Navbar */
+@keyframes megaIn { from{opacity:0;transform:translateY(-10px) scale(.98)} to{opacity:1;transform:none} }
+@keyframes colIn  { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:none} }
+@keyframes cardIn { from{opacity:0;transform:translateY(6px)}  to{opacity:1;transform:none} }
+@keyframes dropIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:none} }
+@keyframes mobIn  { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
+.anim-mega  { animation:megaIn .26s cubic-bezier(.2,.9,.3,1.08) both; }
+.anim-col2  { animation:colIn  .2s ease both; }
+.anim-drop  { animation:dropIn .2s ease both; }
+.anim-mob   { animation:mobIn  .28s cubic-bezier(.2,.9,.3,1.08) both; }
+.anim-card-0{ animation:cardIn .22s ease 0ms   both; }
+.anim-card-1{ animation:cardIn .22s ease 30ms  both; }
+.anim-card-2{ animation:cardIn .22s ease 60ms  both; }
+.anim-card-3{ animation:cardIn .22s ease 90ms  both; }
+.anim-card-4{ animation:cardIn .22s ease 120ms both; }
+.anim-card-5{ animation:cardIn .22s ease 150ms both; }
+.c1btn-arr,.c2btn-arr { opacity:0; transition:opacity .16s,transform .16s; }
+.c1btn:hover .c1btn-arr,.c1btn-on .c1btn-arr,
+.c2btn:hover .c2btn-arr,.c2btn-on .c2btn-arr { opacity:1; transform:translateX(3px); }
+.pcard:hover { background:#EFF8FA!important; transform:translateX(3px); border-color:#B2E0E4; box-shadow:0 2px 10px rgba(0,140,153,.1); }
+.pcard:hover .picon { background:#008C99!important; color:#fff!important; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:#008C99; border-radius:2px; transition:width .2s; }
+.nav-link:hover::after { width:100%; }
+.nav-link-active::after { content:''; position:absolute; bottom:-2px; left:0; width:100%; height:2px; background:#008C99; border-radius:2px; }
+.ps-cta:hover  { transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,140,153,.3); }
+.ps-cta:active { transform:scale(.97); }
+.acc { overflow:hidden; transition:max-height .34s cubic-bezier(.4,0,.2,1),opacity .28s; }
