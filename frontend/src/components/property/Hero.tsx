@@ -474,13 +474,6 @@ const Hero: React.FC<HeroProps> = ({ onSearch, onAiRequest }) => {
             </button>
           </div>
 
-          {/* <div className={`mt-6 ${fadeUp("delay-[560ms]")}`}>
-            <button onClick={onAiRequest} className="flex items-center gap-2.5 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-5 py-[9px] cursor-pointer hover:bg-[rgba(0,140,153,.25)] transition-all">
-              <Sparkles size={14} className="text-[#008C99]" />
-              <span className="text-[12px] font-semibold text-white">Ask PropScroll AI — describe your dream home</span>
-              <span className="text-[12px] font-bold text-[#008C99]">→</span>
-            </button>
-          </div> */}
         </div>
 
         {/* Bottom Search Bar */}
