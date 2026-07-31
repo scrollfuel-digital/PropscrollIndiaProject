@@ -62,8 +62,8 @@ export default function AboutUs() {
     {
       name: "Mona Pillewar",
       role: "Co-founder & MD",
-      exp: "2+ yrs of Experiance in Real Estate",
-      img: "/monamaam.jpeg",
+      exp: "5+ yrs of Experiance in Real Estate",
+      img: "/mona.jpeg",
     },
   ];
 
